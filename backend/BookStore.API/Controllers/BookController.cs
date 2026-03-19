@@ -14,9 +14,16 @@ namespace BookStore.API.Controllers
             _bookContext = temp;
         }
         [HttpGet("AllBooks")]
-        public IActionResult Get(int pageSize = 5, int pageNum = 1) 
+        public IActionResult Get(int pageSize = 5, int pageNum = 1, bool sortByTitle = false) 
         {
-            var something = _bookContext.Books
+            var query = _bookContext.Books.AsQueryable();
+
+            if (sortByTitle)
+            {
+                query = query.OrderBy(b => b.Title);
+            }
+
+            var something = query
             .Skip((pageNum -1) * pageSize)
             .Take(pageSize)
             .ToList();

@@ -7,17 +7,18 @@ function BookList(){
     const [pageNum, setPageNum] = useState<number>(1);
     const [totalItems, setTotalItems] = useState<number>(0);
     const [totalPages, setTotalPages] = useState<number>(0);
+    const [sortByTitle, setSortByTitle] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchBooks = async () => {
-            const response = await fetch(`https://localhost:5000/api/book/allbooks?pageSize=${pageSize}&pageNum=${pageNum}`);
+            const response = await fetch(`https://localhost:5000/api/book/allbooks?pageSize=${pageSize}&pageNum=${pageNum}&sortByTitle=${sortByTitle}`);
             const data = await response.json();
             setBooks(data.books);
             setTotalItems(data.totalNumBooks);
             setTotalPages(Math.ceil(totalItems / pageSize))
         };
         fetchBooks();
-    }, [pageSize, pageNum, totalItems]);
+    }, [pageSize, pageNum, totalItems, sortByTitle]);
 
 
     return (
@@ -60,6 +61,19 @@ function BookList(){
                 <option value ="5">5</option>
                 <option value ="10">10</option>
                 <option value ="20">20</option>
+            </select>
+        </label>
+        <label>
+            Sort by title:
+            <select
+                value={sortByTitle ? "title" : "default"}
+                onChange={(p) => {
+                    setSortByTitle(p.target.value === "title");
+                    setPageNum(1);
+                }}
+            >
+                <option value="default">Default</option>
+                <option value="title">Title (A-Z)</option>
             </select>
         </label>
         </>
