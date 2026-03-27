@@ -27,7 +27,7 @@ fetchBooks();
 const totalPages = Math.ceil(totalItems / pageSize);
 
 return (
-<div className="py-4">
+<div className="book-list py-4">
     
 
     {books.map((book) => (
@@ -63,7 +63,7 @@ return (
     </div>
     ))}
 
-    <div className="mb-3">
+    <div className="book-list__pagination mb-3">
     <button
         className="btn btn-outline-primary me-2 mb-2"
         disabled={pageNum === 1}
@@ -93,7 +93,7 @@ return (
     </button>
     </div>
 
-    <div className="d-flex flex-wrap gap-3 align-items-center">
+    <div className="book-list__controls d-flex flex-wrap gap-3 align-items-center">
     <label className="form-label mb-0">
         Results per page:
         <select

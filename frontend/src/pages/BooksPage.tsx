@@ -8,7 +8,7 @@ function BooksPage() {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
     return (
-        <div className="container-fluid py-4">
+        <div className="books-page container-fluid py-4">
             <CartSummary />
             <WelcomeBand />
             <div className="row g-4 align-items-start">

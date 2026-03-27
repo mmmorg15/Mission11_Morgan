@@ -22,21 +22,28 @@ function BuyPage() {
 
         }
     return (
-        <>
-        <WelcomeBand />
-        <h2>Buy {bookTitle}</h2>
+        <div className="simple-page container py-4">
+            <WelcomeBand />
+            <div className="buy-page__content">
+                <h2 className="mb-3">Buy {bookTitle}</h2>
 
-        <div>
-            <input type="number" placeholder="Enter Quantity" value={quantityAmount} onChange={(x) => setQuantityAmount(Number(x.target.value))}/>
-            <button className="btn btn-primary" onClick={handleAddToCart}>
-                Add to Cart
-            </button>
+                <div className="buy-page__actions mb-3">
+                    <input
+                        type="number"
+                        placeholder="Enter Quantity"
+                        value={quantityAmount}
+                        onChange={(x) => setQuantityAmount(Number(x.target.value))}
+                    />
+                    <button className="btn btn-primary" onClick={handleAddToCart}>
+                        Add to Cart
+                    </button>
+                </div>
+
+                <button className="btn btn-outline-primary" onClick={() => navigate(-1)}>
+                    Go Back
+                </button>
+            </div>
         </div>
-
-        <button className="btn btn-outline-primary" onClick={() => navigate(-1)}  >
-            Go Back
-        </button>
-        </>
 
     );
 }
