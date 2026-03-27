@@ -34,15 +34,41 @@ function CategoryFilter({
     }
 
     return (
-        <div className="category-filter"> 
-            <h5 className="category-filter__heading">Book Categories</h5>
-            <div className="category-filter__list">
-                {categories.map((c) => (
-                    <div className="category-filter__item" key={c}>
-                        <input type="checkbox" id={c} value={c} onChange={handleCheckboxChange}/>
-                        <label htmlFor={c}>{c}</label>
+        <div className="category-filter accordion" id="categoryFilterAccordion">
+            <div className="accordion-item">
+                <h2 className="accordion-header" id="categoryFilterHeading">
+                    <button
+                        className="accordion-button"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#categoryFilterCollapse"
+                        aria-expanded="true"
+                        aria-controls="categoryFilterCollapse"
+                    >
+                        Book Categories
+                    </button>
+                </h2>
+                <div
+                    id="categoryFilterCollapse"
+                    className="accordion-collapse collapse show"
+                    aria-labelledby="categoryFilterHeading"
+                    data-bs-parent="#categoryFilterAccordion"
+                >
+                    <div className="accordion-body category-filter__list">
+                        {categories.map((c) => (
+                            <div className="category-filter__item" key={c}>
+                                <input
+                                    type="checkbox"
+                                    id={c}
+                                    value={c}
+                                    checked={selectedCategories.includes(c)}
+                                    onChange={handleCheckboxChange}
+                                />
+                                <label htmlFor={c}>{c}</label>
+                            </div>
+                        ))}
                     </div>
-                ))}
+                </div>
             </div> 
         </div>
     );

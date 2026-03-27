@@ -2,13 +2,26 @@ import { useNavigate, useParams } from "react-router-dom";
 import WelcomeBand from "../components/WelcomBand";
 import { useCart } from "../context/CartContext";
 import type { CartItem } from "../types/CartItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function BuyPage() {
     const navigate = useNavigate();
     const {bookTitle, bookId, price} = useParams();
     const {addtoCart} = useCart();
     const [quantityAmount, setQuantityAmount] = useState<number>();
+    const [showSuccessAlert, setShowSuccessAlert] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (!showSuccessAlert) {
+            return;
+        }
+
+        const timer = window.setTimeout(() => {
+            navigate('/cart');
+        }, 600);
+
+        return () => window.clearTimeout(timer);
+    }, [navigate, showSuccessAlert]);
 
     const handleAddToCart = () => {
         const newItem: CartItem = {
@@ -18,7 +31,7 @@ function BuyPage() {
             bookPrice: Number(price) // This should be set to the actual price of the book
         };
             addtoCart(newItem);
-            navigate('/cart');
+            setShowSuccessAlert(true);
 
         }
     return (
@@ -30,6 +43,19 @@ function BuyPage() {
                 <div className="col-12 col-md-10 col-lg-8 mx-auto">
                     <div className="buy-page__content">
                         <h2 className="mb-3">Buy {bookTitle}</h2>
+
+                        {showSuccessAlert ? (
+                            <div className="alert alert-success alert-dismissible fade show" role="alert">
+                                Added to cart.
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"
+                                    onClick={() => setShowSuccessAlert(false)}
+                                ></button>
+                            </div>
+                        ) : null}
 
                         <div className="row g-3 align-items-end mb-3">
                             <div className="col-12 col-sm-6">
