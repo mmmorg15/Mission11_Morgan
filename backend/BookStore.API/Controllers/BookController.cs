@@ -9,39 +9,57 @@ namespace BookStore.API.Controllers
     public class BookController : ControllerBase
     {
         private BookDbContext _bookContext;
-        public BookController(BookDbContext temp) 
+        public BookController(BookDbContext temp)
         {
             _bookContext = temp;
         }
         [HttpGet("AllBooks")]
-        public IActionResult Get(int pageSize = 5, int pageNum = 1, bool sortByTitle = false) 
+        public IActionResult Get(int pageSize = 5, int pageNum = 1, bool sortByTitle = false, [FromQuery] List<string> bookCategory = null)
         {
+
             var query = _bookContext.Books.AsQueryable();
 
-            if (sortByTitle)
+            if (bookCategory != null && bookCategory.Any())
             {
-                query = query.OrderBy(b => b.Title);
+                query = query.Where(p => bookCategory.Contains(p.Category));
             }
 
+            if (sortByTitle)
+                {
+                    query = query.OrderBy(p => p.Title);
+                }
+
+            var totalNumBooks = query.Count();
+
             var something = query
-            .Skip((pageNum -1) * pageSize)
+            .Skip((pageNum - 1) * pageSize)
             .Take(pageSize)
             .ToList();
 
-            var totalNumBooks = _bookContext.Books.Count();
+            
 
-            return Ok(new 
-            { 
-                Books = something, 
-                TotalNumBooks = totalNumBooks 
+            return Ok(new
+            {
+                Books = something,
+                TotalNumBooks = totalNumBooks
             });
         }
 
         [HttpGet("U500")]
         public IEnumerable<Book> GetPageCount()
         {
-            var something = _bookContext.Books.Where( p => p.PageCount <= 500).ToList();
+            var something = _bookContext.Books.Where(p => p.PageCount <= 500).ToList();
             return something;
+        }
+
+        [HttpGet("GetBookCategories")]
+        public IActionResult GetBookCategories()
+        {
+            var bookCategories = _bookContext.Books
+                .Select(b => b.Category)
+                .Distinct()
+                .ToList();
+            return Ok(bookCategories);
         }
     }
 }

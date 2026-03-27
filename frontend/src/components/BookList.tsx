@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
-import type { Book } from './types/Book';
+import type { Book } from '../types/Book';
+import { useNavigate } from 'react-router-dom';
 
-function BookList() {
+function BookList({selectedCategories}: {selectedCategories: string[]}) {
 const [books, setBooks] = useState<Book[]>([]);
 const [pageSize, setPageSize] = useState<number>(5);
 const [pageNum, setPageNum] = useState<number>(1);
 const [totalItems, setTotalItems] = useState<number>(0);
 const [sortByTitle, setSortByTitle] = useState<boolean>(false);
-
+const navigate = useNavigate();
 useEffect(() => {
 const fetchBooks = async () => {
+    const categoryParams = selectedCategories.map((cat) => `bookCategory=${encodeURIComponent(cat)}`).join('&');
+
     const response = await fetch(
-    `https://localhost:5000/api/book/allbooks?pageSize=${pageSize}&pageNum=${pageNum}&sortByTitle=${sortByTitle}`,
+    `https://localhost:5000/api/book/allbooks?pageSize=${pageSize}&pageNum=${pageNum}&sortByTitle=${sortByTitle}${selectedCategories.length ? `&${categoryParams}` : ''}`
     );
     const data = await response.json();
     setBooks(data.books ?? []);
@@ -19,13 +22,13 @@ const fetchBooks = async () => {
 };
 
 fetchBooks();
-}, [pageSize, pageNum, sortByTitle]);
+}, [pageSize, pageNum, sortByTitle, selectedCategories]);
 
 const totalPages = Math.ceil(totalItems / pageSize);
 
 return (
-<div className="container py-4">
-    <h1 className="mb-4">Book List</h1>
+<div className="py-4">
+    
 
     {books.map((book) => (
     <div id="bookCard" className="card shadow-sm mb-3" key={book.bookID}>
@@ -42,7 +45,10 @@ return (
             <strong>ISBN:</strong> {book.isbn}
             </li>
             <li>
-            <strong>Classification/Category:</strong> {book.classification}
+            <strong>Classification:</strong> {book.classification}
+            </li>
+            <li>
+            <strong>Category:</strong> {book.category}
             </li>
             <li>
             <strong>Number of Pages:</strong> {book.pageCount}
@@ -51,6 +57,8 @@ return (
             <strong>Price:</strong> ${book.price}
             </li>
         </ul>
+
+        <button className="btn btn-primary" onClick={() => navigate(`/buy/${book.title}/${book.bookID}/${book.price}`)}>Buy</button>
         </div>
     </div>
     ))}
