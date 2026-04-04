@@ -18,6 +18,7 @@ function App() {
         <Route path ="/books" element={<BooksPage />} />
         <Route path="/buy/:bookTitle/:bookId/:price" element={<BuyPage />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/adminbooks" element={<AdminBooksPage />} />
         <Route path="/admin/books" element={<AdminBooksPage />} />
       </Routes>
     </Router>
