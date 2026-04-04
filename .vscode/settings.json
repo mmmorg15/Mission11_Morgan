@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/7b4ae840-eeb3-42ef-8630-090adf90e355/resourceGroups/appsvc_windows_francecentral/providers/Microsoft.Web/sites/Book-Morgan-Backend2",
+    "appService.deploySubpath": "backend\\BookStore.API\\publish"
+}

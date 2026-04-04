@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import type { Book } from '../types/Book';
 import { useNavigate } from 'react-router-dom';
+import { fetchBooks } from '../api/BooksAPI';
+import Pagination from './Pagination';
 
 function BookList({selectedCategories}: {selectedCategories: string[]}) {
 const [books, setBooks] = useState<Book[]>([]);
@@ -9,22 +11,41 @@ const [pageNum, setPageNum] = useState<number>(1);
 const [totalItems, setTotalItems] = useState<number>(0);
 const [sortByTitle, setSortByTitle] = useState<boolean>(false);
 const navigate = useNavigate();
-useEffect(() => {
-const fetchBooks = async () => {
-    const categoryParams = selectedCategories.map((cat) => `bookCategory=${encodeURIComponent(cat)}`).join('&');
+const [error, setError] = useState<string | null>(null);
+const [loading, setLoading] = useState<boolean>(false);
 
-    const response = await fetch(
-    `https://localhost:5000/api/book/allbooks?pageSize=${pageSize}&pageNum=${pageNum}&sortByTitle=${sortByTitle}${selectedCategories.length ? `&${categoryParams}` : ''}`
-    );
-    const data = await response.json();
+
+useEffect(() => {
+const loadBooks = async () => {
+    try {
+        setLoading(true);
+        const data = await fetchBooks(pageSize, pageNum, sortByTitle, selectedCategories);
+    
+
     setBooks(data.books ?? []);
     setTotalItems(data.totalNumBooks ?? 0);
+    }
+    catch (error) {
+        setError((error as Error).message);
+    }
+    finally{
+        setLoading(false);
+    }
 };
 
-fetchBooks();
+loadBooks();
 }, [pageSize, pageNum, sortByTitle, selectedCategories]);
 
 const totalPages = Math.ceil(totalItems / pageSize);
+
+if (loading) {
+    return <p>Loading books...</p>
+}
+if (error) {
+    return <p className="text-danger">Error loading books: {error}</p>
+}
+
+
 
 return (
 <div className="book-list py-4">
@@ -60,71 +81,19 @@ return (
 
         <button className="btn btn-primary" onClick={() => navigate(`/buy/${book.title}/${book.bookID}/${book.price}`)}>Buy</button>
         </div>
+        
     </div>
     ))}
+    <Pagination
+            currentPage={pageNum}
+            totalPages={totalPages}
+            pageSize={pageSize}
+            onPageChange={setPageNum}
+            onPageSizeChange={setPageSize}
+            sortByTitle={sortByTitle}
+            onSortByTitleChange={setSortByTitle}
+        />
 
-    <div className="book-list__pagination mb-3">
-    <button
-        className="btn btn-outline-primary me-2 mb-2"
-        disabled={pageNum === 1}
-        onClick={() => setPageNum(pageNum - 1)}
-    >
-        Previous
-    </button>
-
-    {Array.from({ length: totalPages }, (_, index) => (
-        <button
-        className={`btn mb-2 me-2 ${
-            pageNum === index + 1 ? 'btn-primary' : 'btn-outline-primary'
-        }`}
-        key={index + 1}
-        onClick={() => setPageNum(index + 1)}
-        >
-        {index + 1}
-        </button>
-    ))}
-
-    <button
-        className="btn btn-outline-primary mb-2"
-        disabled={pageNum === totalPages || totalPages === 0}
-        onClick={() => setPageNum(pageNum + 1)}
-    >
-        Next
-    </button>
-    </div>
-
-    <div className="book-list__controls d-flex flex-wrap gap-3 align-items-center">
-    <label className="form-label mb-0">
-        Results per page:
-        <select
-        className="form-select ms-2 d-inline-block w-auto"
-        value={pageSize}
-        onChange={(event) => {
-            setPageSize(Number(event.target.value));
-            setPageNum(1);
-        }}
-        >
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="20">20</option>
-        </select>
-    </label>
-
-    <label className="form-label mb-0">
-        Sort by title:
-        <select
-        className="form-select ms-2 d-inline-block w-auto"
-        value={sortByTitle ? 'title' : 'default'}
-        onChange={(event) => {
-            setSortByTitle(event.target.value === 'title');
-            setPageNum(1);
-        }}
-        >
-        <option value="default">Default</option>
-        <option value="title">Title (A-Z)</option>
-        </select>
-    </label>
-    </div>
 </div>
 );
 }
