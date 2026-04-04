@@ -1,11 +1,10 @@
 import type { Book } from "../types/Book";
+import { API_URL } from "./apiConfig";
 
 interface fetchBooksResponse {
     books: Book[];
     totalNumBooks: number;
 }
-
-const API_URL = "https://book-morgan-backend-c2h0azdzascva2cg.francecentral-01.azurewebsites.net/api/book";
 
 export const fetchBooks = async (
     pageSize: number,
