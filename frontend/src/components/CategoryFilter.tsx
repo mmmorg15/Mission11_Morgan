@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { API_URL } from "../api/apiConfig";
 import "./CategoryFilter.css";
 
+// Fetches available categories and lets the user toggle them as active filters.
 function CategoryFilter({
     selectedCategories,
     setSelectedCategories,

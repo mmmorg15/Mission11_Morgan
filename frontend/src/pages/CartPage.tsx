@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import type { CartItem } from '../types/CartItem';
 
+// Displays the current cart contents and lets the user remove items or keep shopping.
 function CartPage() {
 const navigate = useNavigate();
 const { cartItems, removeFromCart } = useCart();

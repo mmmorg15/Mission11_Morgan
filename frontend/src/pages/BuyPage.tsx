@@ -4,6 +4,7 @@ import { useCart } from "../context/CartContext";
 import type { CartItem } from "../types/CartItem";
 import { useEffect, useState } from "react";
 
+// Lets the user choose a quantity for a book and add it to the shared cart.
 function BuyPage() {
     const navigate = useNavigate();
     const {bookTitle, bookId, price} = useParams();

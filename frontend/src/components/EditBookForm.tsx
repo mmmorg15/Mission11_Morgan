@@ -8,10 +8,12 @@ interface EditBookFormProps {
     onCancel: () => void;
 };
 
+// Form for editing an existing book — pre-populated with the book's current data
 const EditBookForm = ({ book,onSuccess, onCancel }: EditBookFormProps) => {
+    // Initialize form state with a copy of the existing book
     const [formData, setFormData] = useState<Book>({...book});
 
-
+    // Updates the matching field in formData when an input changes
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
             ...formData,
@@ -19,6 +21,7 @@ const EditBookForm = ({ book,onSuccess, onCancel }: EditBookFormProps) => {
         });
     };
 
+    // Sends the updated book to the API, then calls onSuccess to refresh the list
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         await updateBook(formData.bookID, formData);

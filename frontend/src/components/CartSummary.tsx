@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
+// Shows a compact cart badge with the running item count and total price.
 const CartSummary = () => {
     const navigate = useNavigate();
     const { cartItems } = useCart();

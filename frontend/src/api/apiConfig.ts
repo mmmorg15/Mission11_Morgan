@@ -1,3 +1,4 @@
+// Centralizes the API base URL so local and deployed builds hit the right backend.
 const LOCAL_API_URL = "https://localhost:5000/api/book";
 const PRODUCTION_API_URL =
     "https://book-morgan-backend-c2h0azdzascva2cg.francecentral-01.azurewebsites.net/api/book";

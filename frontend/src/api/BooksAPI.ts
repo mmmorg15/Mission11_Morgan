@@ -6,6 +6,7 @@ interface fetchBooksResponse {
     totalNumBooks: number;
 }
 
+// Fetches a paginated, optionally sorted and category-filtered list of books
 export const fetchBooks = async (
     pageSize: number,
     pageNum: number,
@@ -13,6 +14,7 @@ export const fetchBooks = async (
     selectedCategories: string[]
 ): Promise<fetchBooksResponse> => {
     try {
+        // Build category query params if any categories are selected
         const categoryParams = selectedCategories.map((cat) => `bookCategory=${encodeURIComponent(cat)}`).join('&');
 
         const response = await fetch(
@@ -22,7 +24,7 @@ export const fetchBooks = async (
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         return await response.json();
     } catch (error) {
         console.error("Error fetching books:", error);
@@ -30,7 +32,7 @@ export const fetchBooks = async (
     }
 };
 
-
+// Sends a POST request to add a new book to the database
 export const addBook = async (newBook: Book): Promise<Book> => {
     try {
         const response = await fetch(`${API_URL}/addbook?`, {
@@ -53,6 +55,7 @@ export const addBook = async (newBook: Book): Promise<Book> => {
 
 };
 
+// Sends a PUT request to update an existing book by ID
 export const updateBook = async (bookID: number, updatedBook: Book): Promise<Book> => {
     try {
         const response = await fetch(`${API_URL}/updatebook/${bookID}`, {
@@ -61,16 +64,17 @@ export const updateBook = async (bookID: number, updatedBook: Book): Promise<Boo
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(updatedBook)
-            
+
         });
         return await response.json();
     } catch (error) {
         console.error("Error updating book:", error);
         throw error;
     }
-    
+
 }
 
+// Sends a DELETE request to remove a book by ID
 export const deleteBook = async (bookID: number): Promise<void> => {
     try {
         const response = await fetch(`${API_URL}/deletebook/${bookID}`, {

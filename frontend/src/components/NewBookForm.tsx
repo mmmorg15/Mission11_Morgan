@@ -7,7 +7,9 @@ interface NewBookFormProps {
     onCancel: () => void;
 };
 
+// Form for adding a new book to the catalog
 const NewProjectForm = ({ onSuccess, onCancel }: NewBookFormProps) => {
+    // Initialize form with empty/default values for all book fields
     const [formData, setFormData] = useState<Book>({
         bookID: 0,
         title: "",
@@ -20,6 +22,7 @@ const NewProjectForm = ({ onSuccess, onCancel }: NewBookFormProps) => {
         price: 0.0
     });
 
+    // Updates the matching field in formData when an input changes
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
             ...formData,
@@ -27,6 +30,7 @@ const NewProjectForm = ({ onSuccess, onCancel }: NewBookFormProps) => {
         });
     };
 
+    // Submits the new book to the API, then calls onSuccess to refresh the list
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         await addBook(formData);

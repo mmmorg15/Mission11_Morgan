@@ -5,6 +5,7 @@ import App from './App.tsx'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
+// Boots the React app and mounts it into the Vite root element.
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />

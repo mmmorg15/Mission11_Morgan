@@ -5,19 +5,23 @@ import Pagination from "../components/Pagination";
 import NewBookForm from "../components/NewBookForm";
 import EditBookForm from "../components/EditBookForm";
 
+// Admin page for managing the book catalog — supports add, edit, and delete
 const AdminBooksPage = () => {
     const [books, setBooks] = useState<Book[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
+    // Pagination and sort state
     const [pageSize, setPageSize] = useState<number>(5);
     const [pageNum, setPageNum] = useState<number>(1);
     const [totalItems, setTotalItems] = useState<number>(0);
     const [sortByTitle, setSortByTitle] = useState<boolean>(false);
 
+    // Controls visibility of the add form and which book is being edited
     const [showForm, setShowForm] = useState<boolean>(false);
     const [editingBook, setEditingBook] = useState<Book | null>(null);
 
+    // Re-fetches books whenever page size, page number, or sort order changes
     useEffect(() => {
         const loadBooks = async () => {
             try {
@@ -37,6 +41,7 @@ const AdminBooksPage = () => {
         loadBooks();
     }, [pageSize, pageNum, sortByTitle]);
 
+    // Prompts the user to confirm, then deletes the book and updates local state
     const handleDelete = async (bookID: number) => {
         const confirmDelete = window.confirm("Are you sure you want to delete this book? This action cannot be undone.");
         if (!confirmDelete) return;

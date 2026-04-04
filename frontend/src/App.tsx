@@ -7,7 +7,7 @@ import CartPage from './pages/CartPage';
 import { CartProvider } from './context/CartContext';
 import AdminBooksPage from './pages/AdminBooksPage';
 
-
+// Wires the app routes together and keeps cart state available across all pages.
 function App() {
   
   return (

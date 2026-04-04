@@ -1,3 +1,4 @@
+// Renders page navigation plus the page-size and sort controls for the catalog.
 interface PaginationProps {
     currentPage: number;
     totalPages: number;

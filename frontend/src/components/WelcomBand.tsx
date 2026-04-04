@@ -1,3 +1,4 @@
+// Displays the page title banner used across the storefront pages.
 function WelcomeBand() {
     return (
         <div className="welcome-band">

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchBooks } from '../api/BooksAPI';
 import Pagination from './Pagination';
 
+// Loads the current page of books and renders the catalog cards with paging controls.
 function BookList({selectedCategories}: {selectedCategories: string[]}) {
 const [books, setBooks] = useState<Book[]>([]);
 const [pageSize, setPageSize] = useState<number>(5);

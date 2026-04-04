@@ -1,3 +1,4 @@
+/* Styles the category accordion and stacked checkbox list. */
 .category-filter {
     display: flex;
     flex-direction: column;
