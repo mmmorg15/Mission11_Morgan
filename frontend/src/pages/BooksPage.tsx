@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import BookList from "../components/BookList";
 import CategoryFilter from "../components/CategoryFilter";
 import WelcomeBand from "../components/WelcomBand";
@@ -6,10 +7,14 @@ import CartSummary from "../components/CartSummary";
 
 function BooksPage() {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const navigate = useNavigate();
 
     return (
         <div className="books-page container-fluid py-4">
             <CartSummary />
+            <button className="btn btn-secondary mb-3" onClick={() => navigate("/admin/books")}>
+                Admin
+            </button>
             <div className="row g-4">
                 <div className="col-12">
                     <WelcomeBand />
